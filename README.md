@@ -26,11 +26,12 @@ Example `dns.yaml`:
 ```yaml
 example.com:
   - comment: website ipv4 address
-    name: example.com
+    # "@" is replaced by the domain name, similarly to the cloudflare website
+    name: "@"
     type: A
     value: 127.0.0.1
   - comment: website ipv6 address
-    name: example.com
+    name: "@"
     type: AAAA
     value: ::1
   - comment: www redirects to non-www using cloudflare rule
@@ -41,17 +42,17 @@ example.com:
     # this value is overridden by the redirect rule
     value: rule.redirects.to.example.com
   - comment: email spf record for google
-    name: example.com
+    name: "@"
     type: TXT
     value: v=spf1 include:_spf.google.com ~all
   - comment: email mx record for google
-    name: example.com
+    name: "@"
     priority: 1
     type: MX
     value: smtp.google.com
 example.org:
   - comment: website redirect to example.com using cloudflare rule
-    name: example.org
+    name: "@"
     # proxied must be true for the redirect rule to work
     proxied: true
     type: CNAME
