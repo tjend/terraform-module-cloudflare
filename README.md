@@ -1,6 +1,6 @@
 # Terraform Moldule Cloudflare
 
-This module makes it easier to setup Cloudflare DNS records.
+This module makes it easier to setup Cloudflare DNS records and add simple hostname redirects.
 
 It also enables for all zones:
 
@@ -33,10 +33,13 @@ example.com:
     name: example.com
     type: AAAA
     value: ::1
-  - comment: www subdomain
+  - comment: www redirects to non-www using cloudflare rule
     name: www
+    # proxied must be true for the redirect rule to work
+    proxied: true
     type: CNAME
-    value: example.com
+    # this value is overridden by the redirect rule
+    value: rule.redirects.to.example.com
   - comment: email spf record for google
     name: example.com
     type: TXT
@@ -47,8 +50,15 @@ example.com:
     type: MX
     value: smtp.google.com
 example.org:
-  - comment: website redirect to example.org using cloudflare rule
+  - comment: website redirect to example.com using cloudflare rule
     name: example.org
+    # proxied must be true for the redirect rule to work
+    proxied: true
+    type: CNAME
+    # this value is overridden by the redirect rule
+    value: rule.redirects.to.example.com
+  - comment: website redirect to example.com using cloudflare rule
+    name: www
     # proxied must be true for the redirect rule to work
     proxied: true
     type: CNAME
@@ -59,9 +69,20 @@ example.org:
 Example `redirects.yaml`:
 
 ```yaml
+example.com:
+  - comment: redirect www.example.com to https://example.com/
+    hostname: www.example.org
+    temporary: false
+    url: https://example.com/
 example.org:
-  temporary: false
-  url: https://example.com
+  - comment: redirect example.org to https://example.com/
+    hostname: example.org
+    temporary: false
+    url: https://example.com
+  - comment: redirect www.example.org to https://example.com/
+    hostname: www.example.org
+    temporary: false
+    url: https://example.com
 ```
 
 ## Terraform Outputs

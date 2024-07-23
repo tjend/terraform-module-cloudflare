@@ -7,7 +7,7 @@ locals {
           "comment"  = record.comment
           "domain"   = domain
           "name"     = record.name
-          "priority" = try(record.priority, null)
+          "priority" = record.priority
           "proxied"  = record.proxied
           "type"     = record.type
           "value"    = record.value
