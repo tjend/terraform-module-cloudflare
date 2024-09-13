@@ -18,6 +18,9 @@ module "dns" {
 
   domains   = yamldecode(file("dns.yaml"))
   redirects = yamldecode(file("redirects.yaml"))
+
+  # do not verify dns record count
+  #verify-dns-record-count = false
 }
 ```
 
@@ -92,3 +95,9 @@ The modules provides two outputs:
 
 - `cloudflare-dns-hosting-status` - which shows whether each domain is active on Cloudflare
 - `dnssec-status` - which shows whether each domain has DNSSEC active on Cloudflare
+
+## Verify DNS Record Count
+
+This module will check, by default, that the dns record count at Cloudflare matches the number of records in `var.domains`. This allows you to detect any manually added records.
+
+If you manage records outside of Terraform, you can disable this check by passing in `verify-dns-record-count = false` to the module.
