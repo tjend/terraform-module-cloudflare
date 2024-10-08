@@ -31,13 +31,19 @@ data "http" "dns-records-all" {
       error_message = "Too many dns records for ${each.key} (> 50000 records)."
     }
 
-    # fail if dns record count don't match yaml file
+    # fail if the dns record count at Cloudflare doesn't match `var.domains`
     postcondition {
-      condition     = !var.verify-dns-record-count || (
-        jsondecode(self.response_body).result_info.count == length(each.value))
+      condition = !var.verify-dns-record-count || (jsondecode(self.response_body).result_info.count == length(each.value))
       error_message = join(" ", [
         "Records at cloudflare (${jsondecode(self.response_body).result_info.count})",
         "do not match yaml file (${length(each.value)}) for ${each.key}.",
+        "\n\nManually created Cloudflare records found are:\n",
+        join("\n", [
+          for record in jsondecode(self.response_body).result :
+          " - ${record.name} type=${record.type} content=${record.content} proxied=${record.proxied} id=${record.id} zone_id=${record.zone_id} comment=${record.comment == null ? "" : record.comment}"
+          # filter out existing dns records within opentofu
+          if !contains([for records in resource.cloudflare_record.records : records.id], record.id)
+        ]),
       ])
     }
   }

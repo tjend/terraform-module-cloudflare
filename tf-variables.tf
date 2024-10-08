@@ -21,7 +21,7 @@ variable "redirects" {
 }
 
 variable "verify-dns-record-count" {
-  default = true
+  default     = true
   description = "Verify dns record count at Cloudflare matches the number of records defined in var.domains"
-  type = bool
+  type        = bool
 }

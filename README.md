@@ -98,6 +98,6 @@ The modules provides two outputs:
 
 ## Verify DNS Record Count
 
-This module will check, by default, that the dns record count at Cloudflare matches the number of records in `var.domains`. This allows you to detect any manually added records.
+This module will check, by default, that the dns record count at Cloudflare matches the number of records in `var.domains`. This allows you to detect any manually added records. Details will be output for any extra records found (to make importing easier).
 
 If you manage records outside of Terraform, you can disable this check by passing in `verify-dns-record-count = false` to the module.
