@@ -21,12 +21,12 @@ resource "cloudflare_record" "records" {
   for_each = local.dns-records
 
   comment = each.value.comment
+  content = each.value.value
   # allow using "@" for the domain (like cloudflare's website)
   name     = each.value.name == "@" ? each.value.domain : each.value.name
   priority = each.value.priority
   proxied  = each.value.proxied
   ttl      = 1 # automatic
   type     = each.value.type
-  value    = each.value.value
   zone_id  = local.zone-ids[each.value.domain]
 }
