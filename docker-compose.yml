@@ -1,0 +1,8 @@
+services:
+  tofu:
+    environment:
+      TF_IN_AUTOMATION: true
+    image: ghcr.io/opentofu/opentofu:1.11.5
+    volumes:
+      - .:/src
+    working_dir: /src
