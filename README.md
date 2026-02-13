@@ -1,4 +1,4 @@
-# Terraform Moldule Cloudflare
+# Terraform Module Cloudflare
 
 This module makes it easier to setup Cloudflare DNS records and add simple hostname redirects.
 
