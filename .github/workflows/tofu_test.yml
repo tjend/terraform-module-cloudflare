@@ -1,0 +1,26 @@
+name: tofu test
+
+on:
+  push:
+
+jobs:
+  test:
+    permissions:
+      contents: read # allow git checkouts
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: copy .env
+        run: cp .env.example .env
+
+      - name: tofu fmt check
+        run: make tofu_fmt_check
+
+      - name: tofu init
+        run: make tofu_init
+
+      - name: tofu test
+        run: make tofu_test

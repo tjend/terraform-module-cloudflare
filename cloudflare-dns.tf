@@ -29,4 +29,6 @@ resource "cloudflare_record" "records" {
   ttl      = 1 # automatic
   type     = each.value.type
   zone_id  = local.zone-ids[each.value.domain]
+
+  depends_on = [terraform_data.dns-record-clashes]
 }
