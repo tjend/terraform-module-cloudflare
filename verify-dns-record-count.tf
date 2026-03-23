@@ -40,7 +40,7 @@ data "http" "dns-records-all" {
         "\n\nManually created Cloudflare records found are:\n",
         join("\n", [
           for record in jsondecode(self.response_body).result :
-          " - ${record.name} type=${record.type} content=${record.content} proxied=${record.proxied} id=${record.id} zone_id=${record.zone_id} comment=${record.comment == null ? "" : record.comment}"
+          " - ${record.name} type=${record.type} content=${record.content} proxied=${record.proxied} id=${record.id} comment=${record.comment == null ? "" : record.comment}"
           # filter out existing dns records within opentofu
           if !contains([for records in resource.cloudflare_record.records : records.id], record.id)
         ]),
